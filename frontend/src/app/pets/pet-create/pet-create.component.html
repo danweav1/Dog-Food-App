@@ -1,0 +1,22 @@
+<mat-card>
+  <form (ngSubmit)="onAddPet(petForm)" #petForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        ngModel
+        name="petName"
+        required
+        minlength="1"
+        placeholder="Pet Name"
+        #petName="ngModel"
+      />
+      <mat-error *ngIf="petName.invalid">
+        Please enter a name for your pet
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">
+      Add Pet!
+    </button>
+  </form>
+</mat-card>

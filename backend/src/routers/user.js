@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 const router = new express.Router();
 
 // create a user
-router.post('/users', async (req, res) => {
+router.post('/users/signup', async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
@@ -60,7 +60,7 @@ router.get('/users/me', auth, async (req, res) => {
 // change your account info
 router.patch('/users/me', auth, async (req, res) => {
   const updates = Object.keys(req.body); // takes the object and returns the keys of the object as an array of strings
-  const allowedUpdates = ['name', 'email', 'password'];
+  const allowedUpdates = ['email', 'password'];
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update)); // for every update in updates, return true or false
 
   if (!isValidOperation) {

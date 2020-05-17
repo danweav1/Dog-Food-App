@@ -4,46 +4,31 @@ const auth = require('../middleware/auth');
 const router = new express.Router();
 
 // Add a pet
-router.post('/pets', async (req, res) => {
+router.post('/pets', auth, async (req, res) => {
   const pet = new Pet({
     ...req.body,
+    owner: req.user._id,
   });
-  // console.log('hey look at pet', pet, req.body);
-  // res.status(201).send({ message: 'Pet added successfully!' });
-  // const pet = new Pet({
-  //   ...req.body,
-  //   owner: req.user._id,
-  // });
-  console.log(pet);
-  console.log(req.body);
   try {
     await pet.save();
-    res.status(201).send(pet);
-    console.log(pet);
+    res.status(201).send({ message: 'Pet added: ' + pet.name, pet });
   } catch (error) {
     res.status(400).send(error);
-    console.log(error);
   }
 });
 
 // Get your pets
-router.get('/pets', async (req, res) => {
-  const pets = [
-    { id: 'ablks123123', name: 'Brooklyn', owner: 'Dan' },
-    { id: 'a23443', name: 'Brooklyn1', owner: 'Dan' },
-    { id: 'abaweee', name: 'Brooklyn2', owner: 'Dan' },
-    { id: 'abaweee', name: 'Brooklyn3', owner: 'Dan' },
-  ];
-  res.status(202).send({
-    message: 'Pets fetched succesfully!',
-    pets,
-  });
-  // try {
-  //   await req.user.populate('pets').execPopulate();
-  //   res.send(req.user.pets);
-  // } catch (error) {
-  //   res.status(400).send(error);
-  // }
+router.get('/pets', auth, async (req, res) => {
+  try {
+    await req.user.populate('pets').execPopulate();
+    console.log(req.user.pets);
+    res.send({
+      message: 'Got pets!',
+      pets: req.user.pets,
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 // Get pet by id
@@ -57,6 +42,43 @@ router.get('/pets/:id', auth, async (req, res) => {
     res.send(pet);
   } catch (error) {
     res.status(400).send(error);
+  }
+});
+
+router.patch('/pets/:id', auth, async (req, res) => {
+  const updates = Object.keys(req.body); // takes the object and returns the keys of the object as an array of strings
+  const allowedUpdates = ['name', 'badIngredients', 'favoriteFoods', 'avatarPath'];
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update)); // for every update in updates, return true or false
+
+  if (!isValidOperation) {
+    return res.status(400).send({ error: 'Invalid updates!' });
+  }
+
+  try {
+    const pet = await Pet.findOne({ _id: req.params.id, owner: req.user._id });
+    if (!pet) {
+      return res.status(404).send(); // no pet found with given id
+    }
+    updates.forEach((update) => (pet[update] = req.body[update]));
+    await pet.save();
+    res.send(pet);
+  } catch (error) {
+    // could be validation or server/database issue
+    res.status(400).send(error);
+  }
+});
+
+router.delete('/pets/:id', auth, async (req, res) => {
+  try {
+    const pet = await Pet.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
+
+    if (!pet) {
+      res.status(404).send(error);
+    }
+
+    res.status(200).send({ message: 'Pet deleted!', pet });
+  } catch (error) {
+    res.status(500).send(error);
   }
 });
 

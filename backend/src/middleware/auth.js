@@ -9,7 +9,6 @@ const auth = async (req, res, next) => {
     if (!user) {
       throw new Error();
     }
-
     // we are adding these two onto the request so they can be used in future requests on other routes
     req.token = token;
     req.user = user;

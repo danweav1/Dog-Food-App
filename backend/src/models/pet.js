@@ -8,13 +8,9 @@ const petSchema = new mongoose.Schema(
       trim: true,
     },
     badIngredients: [
-      [
-        {
-          Ingredient: {
-            type: String,
-          },
-        },
-      ],
+      {
+        type: String,
+      },
     ],
     favoriteFoods: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Food' }],
     owner: {

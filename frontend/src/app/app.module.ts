@@ -13,7 +13,9 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { PetCreateComponent } from './pets/pet-create/pet-create.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { PetListComponent } from './pets/pet-list/pet-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth/auth-interceptor';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -35,8 +37,11 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FlexLayoutModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

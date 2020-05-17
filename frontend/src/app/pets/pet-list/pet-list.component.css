@@ -3,6 +3,29 @@
   margin-top: 1rem;
 }
 
-.info-text {
+mat-spinner {
+  margin: auto;
+}
+
+mat-card {
+  height: 300px;
+  width: 700px;
+  border: 1px solid maroon;
+  margin: auto;
+}
+img {
+  height: fit-content;
+  max-height: 290px;
+  max-width: 200px;
+  object-fit: cover; /*this makes the image in src fit to the size specified below*/
+  object-position: center;
+}
+
+div {
+  margin: 10px 10px 10px 10px;
+  font-family: "Quicksand", Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }

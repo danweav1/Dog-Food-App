@@ -1,5 +1,6 @@
 <mat-card>
-  <form (ngSubmit)="onAddPet(petForm)" #petForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (ngSubmit)="onAddPet(petForm)" #petForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
       <input
         matInput

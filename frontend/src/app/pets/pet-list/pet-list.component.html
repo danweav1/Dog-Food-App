@@ -1,13 +1,51 @@
-<mat-accordion *ngIf="pets.length > 0">
+<div fxLayout="row wrap" fxLayoutGap="40px" fxLayoutAlign="center">
+  <mat-card *ngFor="let pet of pets">
+    <div fxLayout="row" fxLayoutGap="40px" fxLayout.xs="column">
+      <div fxFlex="25%">
+        <img src="{{ pet.imagePath }}" alt="Pet Avatar" />
+      </div>
+      <div fxFlex="75%">
+        <div fxLayout="column">
+          <h1 fxFlex="33%">{{ pet.name }}</h1>
+          <mat-expansion-panel fxFlex="33%">
+            <mat-expansion-panel-header>
+              Favorite Foods!
+            </mat-expansion-panel-header>
+            <mat-chip-list>
+              <mat-chip *ngFor="let food of pet.favoriteFoods">
+                {{ food.name }}
+              </mat-chip>
+            </mat-chip-list>
+          </mat-expansion-panel>
+          <mat-expansion-panel fxFlex="33%">
+            <mat-expansion-panel-header>
+              Bad ingredients!
+            </mat-expansion-panel-header>
+            <mat-chip-list>
+              <mat-chip *ngFor="let ingredient of pet.badIngredients">
+                {{ ingredient }}
+              </mat-chip>
+            </mat-chip-list>
+          </mat-expansion-panel>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+<p class="info-text mat-body-1" *ngIf="pets.length <= 0 && !isLoading">
+  No Pets!
+</p>
+<!-- <mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion *ngIf="pets.length > 0 && !isLoading">
   <mat-expansion-panel *ngFor="let pet of pets">
     <mat-expansion-panel-header>
       {{ pet.name }}
     </mat-expansion-panel-header>
     <p>{{ pet.owner }}</p>
     <mat-action-row>
-      <button mat-button color="primary">EDIT</button>
-      <button mat-button color="warn">DELETE</button>
+      <button mat-button color="primary" (click)="onEdit(pet.id)">EDIT</button>
+      <button mat-button color="warn" (click)="onDelete(pet.id)">DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<p class="info-text mat-body-1" *ngIf="pets.length <= 0">test</p>
+<p class="info-text mat-body-1" *ngIf="pets.length <= 0 && !isLoading">No Pets!</p> -->

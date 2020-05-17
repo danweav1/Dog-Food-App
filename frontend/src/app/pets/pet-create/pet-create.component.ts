@@ -8,6 +8,8 @@ import { PetsService } from '../pets.service';
   styleUrls: ['./pet-create.component.css'],
 })
 export class PetCreateComponent implements OnInit {
+  isLoading = false;
+
   constructor(private petsService: PetsService) {}
 
   ngOnInit(): void {}
@@ -16,6 +18,7 @@ export class PetCreateComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+    this.isLoading = true;
     this.petsService.addPet(form.value.petName);
     form.resetForm();
   }

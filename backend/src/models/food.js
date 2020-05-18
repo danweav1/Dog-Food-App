@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Food = mongoose.model('Food', {
+const foodSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -30,4 +30,5 @@ const Food = mongoose.model('Food', {
   },
 });
 
+const Food = mongoose.model('Food', foodSchema);
 module.exports = Food;

@@ -21,16 +21,17 @@ router.get('/food', auth, async (req, res) => {
   }
 
   if (req.query.ingredients) {
-    match.ingredients = { $all: req.query.ingredients };
+    match.ingredients = { $all: req.query.ingredients }; // will look for foods that contain the given ingredients
+  } else if (req.query.noingredients) {
+    match.ingredients = { $ne: req.query.noingredients };
   }
 
-  console.log(req.query.ingredients);
-  console.log(match.ingredients);
+  console.log(match);
+
   try {
-    const allFood = await Food.find(match);
-    console.log(allFood);
+    const food = await Food.find(match);
     res.send({
-      allFood,
+      food,
     });
   } catch (error) {
     res.status(400).send(error);

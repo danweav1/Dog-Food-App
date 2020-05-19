@@ -16,10 +16,6 @@ router.get('/food', auth, async (req, res) => {
     match.brand = req.query.brand;
   }
 
-  if (req.query.flavor) {
-    match.flavor = req.query.flavor;
-  }
-
   if (req.query.ingredients) {
     match.ingredients = { $all: req.query.ingredients }; // will look for foods that contain the given ingredients
   } else if (req.query.noingredients) {
@@ -29,9 +25,9 @@ router.get('/food', auth, async (req, res) => {
   console.log(match);
 
   try {
-    const food = await Food.find(match);
+    const foods = await Food.find(match);
     res.send({
-      food,
+      foods,
     });
   } catch (error) {
     res.status(400).send(error);

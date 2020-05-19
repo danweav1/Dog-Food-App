@@ -1,11 +1,17 @@
-<div fxLayout="row wrap" fxLayoutGap="40px" fxLayoutAlign="center">
+<div
+  fxLayout="row"
+  fxLayoutWrap
+  fxLayoutGap="0.5%"
+  fxLayoutAlign="center"
+  fxLayout.xs="column"
+>
   <mat-card *ngFor="let pet of pets">
-    <div fxLayout="row" fxLayoutGap="40px" fxLayout.xs="column">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
       <div fxFlex="25%">
         <img src="{{ pet.imagePath }}" alt="Pet Avatar" />
       </div>
       <div fxFlex="75%">
-        <div fxLayout="column">
+        <div fxLayout="column" fxLayoutAlign="center center">
           <h1 fxFlex="33%">{{ pet.name }}</h1>
           <mat-expansion-panel fxFlex="33%">
             <mat-expansion-panel-header>

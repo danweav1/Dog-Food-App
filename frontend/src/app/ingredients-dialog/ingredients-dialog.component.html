@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Ingredients for {{ name }}</h2>
+<mat-dialog-content>
+  <mat-chip-list>
+    <mat-chip *ngFor="let ingredient of ingredients">
+      {{ ingredient }}
+    </mat-chip>
+  </mat-chip-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="close()">Close</button>
+</mat-dialog-actions>

@@ -1,1 +1,33 @@
-<p>food-list works!</p>
+<div
+  fxLayout="row"
+  fxLayoutWrap
+  fxLayoutGap="0.5%"
+  fxLayoutAlign="center"
+  fxLayout.xs="column"
+>
+  <mat-card *ngFor="let food of foods">
+    <mat-card-header>
+      <mat-card-title>{{ food.name }} - {{ food.flavor }}</mat-card-title>
+      <mat-card-subtitle>{{ food.brand }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-img src="{{ food.imagePath }}" />
+    <mat-card-content>
+      <button mat-raised-button (click)="openIngredientsDialog(food)">
+        Ingredients
+      </button>
+      <!-- <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          Ingredients
+        </mat-expansion-panel-header>
+        <mat-chip-list>
+          <mat-chip *ngFor="let ingredient of food.ingredients">
+            {{ ingredient }}
+          </mat-chip>
+        </mat-chip-list>
+      </mat-expansion-panel> -->
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="accent">Add to Pet!</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

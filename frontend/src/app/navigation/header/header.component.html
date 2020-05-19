@@ -9,6 +9,11 @@
         >New Pet</a
       >
     </li>
+    <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="/browsefood" routerLinkActive="mat-accent"
+        >Food</a
+      >
+    </li>
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
     </li>

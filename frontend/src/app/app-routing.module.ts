@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { PetListComponent } from './pets/pet-list/pet-list.component';
 import { AuthGuard } from './auth/auth.guard';
+import { FoodListComponent } from './food-list/food-list.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -14,6 +15,11 @@ const routes: Routes = [
   {
     path: 'edit/:petId',
     component: PetCreateComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'browsefood',
+    component: FoodListComponent,
     canActivate: [AuthGuard],
   },
   { path: 'login', component: LoginComponent },

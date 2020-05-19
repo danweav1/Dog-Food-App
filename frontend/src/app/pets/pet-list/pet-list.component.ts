@@ -24,24 +24,19 @@ export class PetListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoading = true;
-    console.log('do i get pets');
     this.petsService.getPets();
-    console.log('got pets');
     this.petsSub = this.petsService
       .getPetUpdateListener()
       .subscribe((pets: Pet[]) => {
         this.isLoading = false;
         this.pets = pets;
       });
-    console.log('');
     this.userIsAuthenticated = this.authService.getIsAuth();
-    console.log('got user aunthetication status');
     this.authStatusSub = this.authService
       .getAuthStatusListener()
       .subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
       });
-    console.log('user is uanthetnicated');
   }
 
   onEdit(petId: string) {}

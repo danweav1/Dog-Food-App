@@ -16,6 +16,7 @@ import { PetListComponent } from './pets/pet-list/pet-list.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { IngredientsDialogComponent } from './ingredients-dialog/ingredients-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SignupComponent,
     PetCreateComponent,
     PetListComponent,
+    IngredientsDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,5 +45,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
+  entryComponents: [IngredientsDialogComponent],
 })
 export class AppModule {}

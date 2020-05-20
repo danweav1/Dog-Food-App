@@ -58,10 +58,16 @@ export class PetListComponent implements OnInit, OnDestroy {
 
   onDelete(petId: string) {
     this.isLoading = true;
-    this.petsService.deletePet(petId).subscribe(() => {
-      // once we delete a pet, we need to refetch them
-      this.petsService.getPets(this.petsPerPage, this.currentPage);
-    });
+    this.petsService.deletePet(petId).subscribe(
+      () => {
+        // once we delete a pet, we need to refetch them
+        this.petsService.getPets(this.petsPerPage, this.currentPage);
+      },
+      () => {
+        // is called when errors happen
+        this.isLoading = false;
+      }
+    );
   }
 
   ngOnDestroy(): void {

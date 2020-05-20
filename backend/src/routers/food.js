@@ -30,7 +30,9 @@ router.get('/food', auth, async (req, res) => {
       foods,
     });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send({
+      message: 'Error retrieving food!',
+    });
   }
 });
 

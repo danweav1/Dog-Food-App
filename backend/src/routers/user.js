@@ -10,7 +10,9 @@ router.post('/users/signup', async (req, res) => {
     await user.save();
     res.status(201).send({ user }); //, token });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send({
+      message: 'Invalid authentication credentials!',
+    });
   }
 });
 
@@ -22,7 +24,9 @@ router.post('/users/login', async (req, res) => {
     console.log(user, token);
     res.status(200).send({ user, token });
   } catch (error) {
-    res.status(400).send();
+    res.status(401).send({
+      message: 'Invalid authentication credentials!',
+    });
   }
 });
 

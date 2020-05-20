@@ -13,7 +13,9 @@ router.post('/pets', auth, async (req, res) => {
     await pet.save();
     res.status(201).send({ message: 'Pet added: ' + pet.name, pet });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send({
+      message: 'Creating a pet failed!',
+    });
   }
 });
 
@@ -42,7 +44,9 @@ router.get('/pets', auth, async (req, res) => {
       maxPets: totalcount,
     });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send({
+      message: 'Fetching pets failed!',
+    });
   }
 });
 
@@ -52,11 +56,15 @@ router.get('/pets/:id', auth, async (req, res) => {
   try {
     const pet = await Pet.findOne({ _id, owner: req.user._id });
     if (!pet) {
-      return res.status(404).send();
+      return res.status(404).send({
+        message: 'Pet not found!',
+      });
     }
     res.send(pet);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send({
+      message: 'Fetching pet failed!',
+    });
   }
 });
 
@@ -72,14 +80,18 @@ router.patch('/pets/:id', auth, async (req, res) => {
   try {
     const pet = await Pet.findOne({ _id: req.params.id, owner: req.user._id });
     if (!pet) {
-      return res.status(404).send(); // no pet found with given id
+      return res.status(401).send({
+        message: 'Not authorized!',
+      }); // no pet found with given id
     }
     updates.forEach((update) => (pet[update] = req.body[update]));
     await pet.save();
     res.send(pet);
   } catch (error) {
     // could be validation or server/database issue
-    res.status(400).send(error);
+    res.status(500).send({
+      message: "Couldn't update pet!",
+    });
   }
 });
 
@@ -88,12 +100,16 @@ router.delete('/pets/:id', auth, async (req, res) => {
     const pet = await Pet.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
 
     if (!pet) {
-      res.status(404).send(error);
+      res.status(404).send({
+        message: 'Not authorized!',
+      });
     }
 
     res.status(200).send({ message: 'Pet deleted!', pet });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({
+      message: 'Deleting pet failed!',
+    });
   }
 });
 

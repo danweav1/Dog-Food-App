@@ -18,6 +18,7 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { IngredientsDialogComponent } from './ingredients-dialog/ingredients-dialog.component';
 import { ErrorInterceptor } from './error-interceptor';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ErrorInterceptor } from './error-interceptor';
     PetCreateComponent,
     PetListComponent,
     IngredientsDialogComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +49,6 @@ import { ErrorInterceptor } from './error-interceptor';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [IngredientsDialogComponent],
+  entryComponents: [IngredientsDialogComponent, ErrorComponent],
 })
 export class AppModule {}

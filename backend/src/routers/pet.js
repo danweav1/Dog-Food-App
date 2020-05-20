@@ -18,13 +18,28 @@ router.post('/pets', auth, async (req, res) => {
 });
 
 // Get your pets
+// GET /pets?limit=10&skip=0 will give us only 10 results at a time. 0 means it will give us the first 10 results. 10 means second page.
+// I am using the name pagesize instead of limit
 router.get('/pets', auth, async (req, res) => {
+  console.log('page size is ' + req.query.pagesize);
+  console.log('page number is ' + req.query.pagesize);
   try {
-    await req.user.populate('pets').execPopulate();
-    console.log(req.user.pets);
+    await req.user
+      .populate({
+        path: 'pets',
+        options: {
+          limit: req.query.pagesize, //mongoose converts this to a number automatically. You would add a + in front normally to convert it, or a parseint
+          skip: req.query.pagesize * (req.query.page - 1), //this too
+        },
+      })
+      .execPopulate();
+    const totalcount = await Pet.count();
+    console.log('totalcount ' + totalcount);
+    console.log('pets', req.user.pets);
     res.send({
       message: 'Got pets!',
       pets: req.user.pets,
+      maxPets: totalcount,
     });
   } catch (error) {
     res.status(400).send(error);

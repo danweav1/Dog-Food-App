@@ -1,4 +1,6 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
 <div
+  *ngIf="pets.length > 0 && !isLoading"
   fxLayout="row"
   fxLayoutWrap
   fxLayoutGap="0.5%"
@@ -38,6 +40,13 @@
     </div>
   </mat-card>
 </div>
+<mat-paginator
+  *ngIf="pets.length > 0"
+  [length]="totalPets"
+  [pageSize]="petsPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onChangedPage($event)"
+></mat-paginator>
 <p class="info-text mat-body-1" *ngIf="pets.length <= 0 && !isLoading">
   No Pets!
 </p>

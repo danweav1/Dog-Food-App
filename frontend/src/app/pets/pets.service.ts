@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Pet } from './pet.model';
 import { Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -10,33 +10,40 @@ import { Router } from '@angular/router';
 })
 export class PetsService {
   private pets: Pet[] = [];
-  private petsUpdated = new Subject<Pet[]>();
+  private petsUpdated = new Subject<{ pets: Pet[]; petCount: number }>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getPets() {
+  getPets(petsPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${petsPerPage}&page=${currentPage}`;
     this.http
-      .get<{ message: string; pets: any }>('http://localhost:3000/pets')
+      .get<{ message: string; pets: any; maxPets: number }>(
+        'http://localhost:3000/pets' + queryParams
+      )
       .pipe(
         map((petData) => {
-          console.log('petData', petData);
-          return petData.pets.map((pet) => {
-            console.log('pet', pet, 'petData', petData);
-            return {
-              id: pet._id,
-              name: pet.name,
-              badIngredients: pet.badIngredients,
-              favoriteFoods: pet.favoriteFoods,
-              owner: pet.owner,
-              imagePath: pet.imagePath,
-            };
-          });
+          return {
+            pets: petData.pets.map((pet) => {
+              return {
+                id: pet._id,
+                name: pet.name,
+                badIngredients: pet.badIngredients,
+                favoriteFoods: pet.favoriteFoods,
+                owner: pet.owner,
+                imagePath: pet.imagePath,
+              };
+            }),
+            maxPets: petData.maxPets,
+          };
         })
       )
-      .subscribe((transformedPets) => {
+      .subscribe((transformedPetsData) => {
         // transformedPets is the result of our map operation
-        this.pets = transformedPets;
-        this.petsUpdated.next([...this.pets]);
+        this.pets = transformedPetsData.pets;
+        this.petsUpdated.next({
+          pets: [...this.pets],
+          petCount: transformedPetsData.maxPets,
+        });
         this.pets.forEach((pet) => {
           pet.imagePath = 'assets/profile-pic.png';
           pet.favoriteFoods.push({
@@ -133,9 +140,6 @@ export class PetsService {
         name,
       })
       .subscribe((res) => {
-        const pet = res.pet;
-        this.pets.push(pet); // only push and update the pets if the http req was successful
-        this.petsUpdated.next([...this.pets]);
         this.router.navigate(['/mypets']);
       });
   }
@@ -143,10 +147,6 @@ export class PetsService {
   editPet(petId: string) {}
 
   deletePet(petId: string) {
-    this.http.delete('http://localhost:3000/pets/' + petId).subscribe(() => {
-      const udpatedPets = this.pets.filter((pet) => pet.id !== petId);
-      this.pets = udpatedPets;
-      this.petsUpdated.next([...this.pets]);
-    });
+    return this.http.delete('http://localhost:3000/pets/' + petId);
   }
 }

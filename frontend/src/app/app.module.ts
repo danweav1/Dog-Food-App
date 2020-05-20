@@ -17,6 +17,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { IngredientsDialogComponent } from './ingredients-dialog/ingredients-dialog.component';
+import { ErrorInterceptor } from './error-interceptor';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { IngredientsDialogComponent } from './ingredients-dialog/ingredients-dia
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
   entryComponents: [IngredientsDialogComponent],

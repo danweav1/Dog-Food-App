@@ -28,27 +28,37 @@ export class AuthService {
 
   createUser(email: string, password: string) {
     const authData: AuthData = { email, password };
-    this.http
+    return this.http
       .post('http://localhost:3000/users/signup', authData)
-      .subscribe(() => {
-        this.router.navigate(['/']);
-      });
+      .subscribe(
+        () => {
+          this.router.navigate(['/']);
+        },
+        (error) => {
+          this.authStatusListener.next(false);
+        }
+      );
   }
 
   login(email: string, password: string) {
     const authData: AuthData = { email, password };
     this.http
       .post<{ token: string }>('http://localhost:3000/users/login', authData)
-      .subscribe((res) => {
-        this.token = res.token;
-        if (res.token) {
-          this.isAuthenticated = true;
-          console.log('logged in');
-          this.authStatusListener.next(true); // tell anyone subscribed that the user is authenticated
-          this.saveAuthData(this.token);
-          this.router.navigate(['/mypets']);
+      .subscribe(
+        (res) => {
+          this.token = res.token;
+          if (res.token) {
+            this.isAuthenticated = true;
+            console.log('logged in');
+            this.authStatusListener.next(true); // tell anyone subscribed that the user is authenticated
+            this.saveAuthData(this.token);
+            this.router.navigate(['/mypets']);
+          }
+        },
+        (error) => {
+          this.authStatusListener.next(false);
         }
-      });
+      );
   }
 
   autoAuthUser() {

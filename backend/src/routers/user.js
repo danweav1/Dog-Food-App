@@ -1,96 +1,27 @@
 const express = require('express');
-const User = require('../models/user');
 const auth = require('../middleware/auth');
 const router = new express.Router();
+const UserController = require('../controllers/user');
 
 // create a user
-router.post('/users/signup', async (req, res) => {
-  const user = new User(req.body);
-  try {
-    await user.save();
-    res.status(201).send({ user }); //, token });
-  } catch (error) {
-    res.status(500).send({
-      message: 'Invalid authentication credentials!',
-    });
-  }
-});
+router.post('/users/signup', UserController.createUser);
 
 // login
-router.post('/users/login', async (req, res) => {
-  try {
-    const user = await User.findByCredentials(req.body.email, req.body.password);
-    const token = await user.generateAuthToken();
-    console.log(user, token);
-    res.status(200).send({ user, token });
-  } catch (error) {
-    res.status(401).send({
-      message: 'Invalid authentication credentials!',
-    });
-  }
-});
+router.post('/users/login', UserController.userLogin);
 
 // logout
-router.post('/users/logout', auth, async (req, res) => {
-  try {
-    req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token;
-    });
-    await req.user.save();
-
-    res.send();
-  } catch (e) {
-    res.status(500).send();
-  }
-});
+router.post('/users/logout', auth, UserController.userLogout);
 
 // logout of all devices
-router.post('/users/logoutAll', auth, async (req, res) => {
-  try {
-    req.user.tokens = [];
-    await req.user.save();
-
-    res.send();
-  } catch (e) {
-    res.status(500).send();
-  }
-});
+router.post('/users/logoutAll', auth, UserController.userLogoutAll);
 
 // Get current logged in user
-router.get('/users/me', auth, async (req, res) => {
-  res.send(req.user);
-});
+router.get('/users/me', auth, UserController.getProfile);
 
 // change your account info
-router.patch('/users/me', auth, async (req, res) => {
-  const updates = Object.keys(req.body); // takes the object and returns the keys of the object as an array of strings
-  const allowedUpdates = ['email', 'password'];
-  const isValidOperation = updates.every((update) => allowedUpdates.includes(update)); // for every update in updates, return true or false
-
-  if (!isValidOperation) {
-    return res.status(400).send({ error: 'Invalid updates!' });
-  }
-
-  try {
-    const user = req.user;
-    updates.forEach((update) => (user[update] = req.body[update]));
-    await user.save();
-    res.send(user);
-  } catch (error) {
-    // could be validation or server/database issue
-    res.status(400).send(error);
-  }
-});
+router.patch('/users/me', auth, UserController.userUpdate);
 
 // delete your account
-router.delete('/users/me', auth, async (req, res) => {
-  const _id = req.params.id;
-  try {
-    await req.user.remove();
-    res.send(req.user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.delete('/users/me', auth, UserController.userDelete);
 
 module.exports = router;

@@ -17,24 +17,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatCheckboxModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatProgressSpinnerModule,
-    MatChipsModule,
-    MatDialogModule,
-    MatPaginatorModule,
-  ],
   exports: [
     MatButtonModule,
     MatIconModule,

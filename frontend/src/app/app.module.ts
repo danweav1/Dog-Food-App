@@ -15,7 +15,6 @@ import { IngredientsDialogComponent } from './ingredients-dialog/ingredients-dia
 import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { PetsModule } from './pets/pets.module';
-import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,6 @@ import { AuthModule } from './auth/auth.module';
     BrowserAnimationsModule,
     AngularMaterialModule,
     PetsModule,
-    AuthModule,
     HttpClientModule,
     FlexLayoutModule,
   ],

@@ -77,7 +77,7 @@ export class AuthService {
     this.authStatusListener.next(false); // push false because user is not authenticated anymores
     console.log('logged out');
     this.clearAuthData();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   private saveAuthData(token: string) {

@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { PetCreateComponent } from './pets/pet-create/pet-create.component';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
 import { PetListComponent } from './pets/pet-list/pet-list.component';
 import { AuthGuard } from './auth/auth.guard';
 import { FoodListComponent } from './food-list/food-list.component';
@@ -22,8 +20,11 @@ const routes: Routes = [
     component: FoodListComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./auth/auth.module').then((module) => module.AuthModule),
+  },
 ];
 
 @NgModule({

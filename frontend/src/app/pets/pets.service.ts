@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment'
+
+const BACKEND_URL = environment.apiUrl + '/pets';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +21,7 @@ export class PetsService {
     const queryParams = `?pagesize=${petsPerPage}&page=${currentPage}`;
     this.http
       .get<{ message: string; pets: any; maxPets: number }>(
-        'http://localhost:3000/pets' + queryParams
+        BACKEND_URL + queryParams
       )
       .pipe(
         map((petData) => {
@@ -136,7 +139,7 @@ export class PetsService {
 
   addPet(name: string) {
     this.http
-      .post<{ message: string; pet: Pet }>('http://localhost:3000/pets', {
+      .post<{ message: string; pet: Pet }>(BACKEND_URL, {
         name,
       })
       .subscribe((res) => {
@@ -147,6 +150,6 @@ export class PetsService {
   editPet(petId: string) {}
 
   deletePet(petId: string) {
-    return this.http.delete('http://localhost:3000/pets/' + petId);
+    return this.http.delete(BACKEND_URL + '/' + petId);
   }
 }

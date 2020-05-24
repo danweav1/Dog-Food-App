@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PetsService } from '../pets.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { mimeType } from './mime-type.validator';
 
 @Component({
   selector: 'app-pet-create',
@@ -11,6 +12,8 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class PetCreateComponent implements OnInit, OnDestroy {
   isLoading = false;
+  imagePreview: string;
+  form: FormGroup;
   private authStatusSub: Subscription;
 
   constructor(
@@ -24,15 +27,36 @@ export class PetCreateComponent implements OnInit, OnDestroy {
       .subscribe((authStatus) => {
         this.isLoading = false; // if the authStatus changes we'll always need to disable the loader
       });
+    this.form = new FormGroup({
+      petName: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)],
+      }),
+      image: new FormControl(null, {
+        asyncValidators: [mimeType],
+      }),
+    });
   }
 
-  onAddPet(form: NgForm): void {
-    if (form.invalid) {
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({
+      image: file,
+    });
+    this.form.get('image').updateValueAndValidity(); // lets angular know the value was changed and it should revalidate it
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    }; // executed when it's done loading the file. it's async.
+    reader.readAsDataURL(file); // instruct it to load the file. kicks off the onload event.
+  }
+
+  onAddPet(): void {
+    if (this.form.invalid) {
       return;
     }
     this.isLoading = true;
-    this.petsService.addPet(form.value.petName);
-    form.resetForm();
+    this.petsService.addPet(this.form.value.petName);
+    this.form.reset();
   }
 
   ngOnDestroy(): void {

@@ -60,7 +60,7 @@
       "Green Tea Extract",
       "Spearmint Extract"
     ],
-    "imagePath": "backend/wellness-deboned-chicken-oatmeal"
+    "imagePath": "https://dog-food-images.s3.us-east-2.amazonaws.com/food/wellness-deboned-chicken-oatmeal.jpg"
   },
   {
     "name": "Large Breed Complete Health Adult",
@@ -124,7 +124,7 @@
       "Green Tea Extract",
       "Spearmint Extract"
     ],
-    "imagePath": "backend/wellness-large-deboned-chicken-brown-rice"
+    "imagePath": "https://dog-food-images.s3.us-east-2.amazonaws.com/food/wellness-large-deboned-chicken-brown-rice.jpg"
   },
   {
     "name": "Complete Health Adult",
@@ -173,7 +173,7 @@
       "Green Tea Extract",
       "Spearmint Extract"
     ],
-    "imagePath": "backend/wellness-adult-whitefish-sweet-potato"
+    "imagePath": "https://dog-food-images.s3.us-east-2.amazonaws.com/food/wellness-adult-whitefish-sweet-potato.jpg"
   },
   {
     "name": "Small Breed Complete Health",
@@ -239,7 +239,7 @@
       "Rosemary Extract",
       "Green Tea Extract"
     ],
-    "imagePath": "backend/wellness-adult-turkey-oatmeal"
+    "imagePath": "https://dog-food-images.s3.us-east-2.amazonaws.com/food/wellness-adult-turkey-oatmeal.jpg"
   },
   {
     "name": "Complete Health Adult",
@@ -304,7 +304,7 @@
       "Green Tea Extract",
       "Spearmint Extract"
     ],
-    "imagePath": "backend/wellness-adult-lamb-barley"
+    "imagePath": "https://dog-food-images.s3.us-east-2.amazonaws.com/food/wellness-adult-lamb-barley.jpg"
   },
   {
     "name": "Complete Health Senior",
@@ -368,7 +368,7 @@
       "Green Tea Extract",
       "Spearmint Extract"
     ],
-    "imagePath": "backend/wellness-senior-deboned-chicken-barley"
+    "imagePath": "https://dog-food-images.s3.us-east-2.amazonaws.com/food/wellness-senior-deboned-chicken-barley.jpg"
   },
   {
     "name": "Small Breed Complete Health Senior",
@@ -432,6 +432,6 @@
       "Green Tea Extract",
       "Spearmint Extract"
     ],
-    "imagePath": "backend/wellness-small-senior-deboned-turkey-peas"
+    "imagePath": "https://dog-food-images.s3.us-east-2.amazonaws.com/food/wellness-small-senior-deboned-turkey-peas.jpg"
   }
 ]

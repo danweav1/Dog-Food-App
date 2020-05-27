@@ -2,10 +2,10 @@ const AWS = require('aws-sdk');
 const Food = require('../models/food');
 
 AWS.config.update({
-  signatureVersion: 'v4',
-  accessKeyId: 'AKIAI4EQI22HQCZ32APQ',
-  secretAccessKey: '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',
-  region: 'us-east-2',
+  signatureVersion: process.env.SIGNATURE_VERSION,
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: process.env.REGION,
 });
 
 const s3 = new AWS.S3();
@@ -58,21 +58,16 @@ exports.getFood = async (req, res) => {
   try {
     pageSize = parseInt(req.query.pagesize);
     page = parseInt(req.query.page);
-    console.log(page);
-    console.log(pageSize);
     const foods = await Food.find(match)
       .skip(pageSize * (page - 1))
       .limit(pageSize);
     const totalCount = await Food.count();
-    console.log(totalCount);
-    console.log(foods);
     res.send({
       message: 'Got food!',
       foods,
       maxFoods: totalCount,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).send({
       message: 'Error retrieving food!',
     });

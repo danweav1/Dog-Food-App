@@ -2,10 +2,10 @@ const Pet = require('../models/pet');
 const AWS = require('aws-sdk');
 
 AWS.config.update({
-  signatureVersion: 'v4',
-  accessKeyId: 'AKIAI4EQI22HQCZ32APQ',
-  secretAccessKey: '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',
-  region: 'us-east-2',
+  signatureVersion: process.env.SIGNATURE_VERSION,
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: process.env.REGION,
 });
 
 const s3 = new AWS.S3();

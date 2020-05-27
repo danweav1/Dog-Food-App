@@ -3,13 +3,6 @@
 // const multer = require('multer');
 // const multerS3 = require('multer-S3');
 
-// AWS.config.update({
-//   signatureVersion: 'v4',
-//   accessKeyId: 'AKIAI4EQI22HQCZ32APQ',
-//   secretAccessKey: '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',
-//   region: 'us-east-2',
-// });
-
 // const s3 = new AWS.S3();
 
 // const uploader = async (req, res, next) => {

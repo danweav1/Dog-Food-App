@@ -1,10 +1,26 @@
 const Pet = require('../models/pet');
+const AWS = require('aws-sdk');
+
+AWS.config.update({
+  signatureVersion: 'v4',
+  accessKeyId: 'AKIAI4EQI22HQCZ32APQ',
+  secretAccessKey: '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',
+  region: 'us-east-2',
+});
+
+const s3 = new AWS.S3();
 
 exports.createPet = async (req, res) => {
   const pet = new Pet({
     ...req.body,
     owner: req.user._id,
   });
+
+  if (req.file) {
+    pet.key = req.file.key;
+  }
+
+  console.log(pet);
   try {
     await pet.save();
     res.status(201).send({ message: 'Pet added: ' + pet.name, pet });
@@ -16,8 +32,6 @@ exports.createPet = async (req, res) => {
 };
 
 exports.getPets = async (req, res) => {
-  console.log('page size is ' + req.query.pagesize);
-  console.log('page number is ' + req.query.pagesize);
   try {
     await req.user
       .populate({
@@ -29,8 +43,18 @@ exports.getPets = async (req, res) => {
       })
       .execPopulate();
     const totalcount = await Pet.count();
-    console.log('totalcount ' + totalcount);
-    console.log('pets', req.user.pets);
+
+    req.user.pets.forEach((pet) => {
+      if (pet.key) {
+        const imageData = {
+          Bucket: 'dog-food-images',
+          Key: pet.key,
+        };
+        const signedUrl = s3.getSignedUrl('getObject', imageData);
+        pet.imagePath = signedUrl;
+      }
+    });
+
     res.send({
       message: 'Got pets!',
       pets: req.user.pets,

@@ -51,7 +51,7 @@ userSchema.virtual('pets', {
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, 'pu05l2IXewqw', { expiresIn: '7 days' });
+  const token = jwt.sign({ _id: user._id.toString() }, process.env.SECRET_KEY, { expiresIn: '7 days' });
   user.tokens.push({ token });
   await user.save();
   return token;

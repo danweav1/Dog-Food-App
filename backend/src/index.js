@@ -1,5 +1,5 @@
 const express = require('express');
-const debug = require('debug')('node-angular');
+//const debug = require('debug')('node-angular');
 require('./db/mongoose'); // don't want to grab anythig, we just want to make sure the file runs and connects to the database
 const userRouter = require('./routers/user');
 const petRouter = require('./routers/pet');
@@ -22,13 +22,17 @@ const normalizePort = (val) => {
 };
 const port = normalizePort(process.env.PORT || 3000);
 
+app.use(express.json()); // will automatically parse incoming json to an object so we can access it in our request handlers
+//app.use(bodyParser.json());
+//app.use('/images', express.static(path.join('images')));
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
   next();
 });
-app.use(express.json()); // will automatically parse incoming json to an object so we can access it in our request handlers
+
 app.use(userRouter);
 app.use(petRouter);
 app.use(foodRouter);

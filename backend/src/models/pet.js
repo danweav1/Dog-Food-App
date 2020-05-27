@@ -18,7 +18,10 @@ const petSchema = new mongoose.Schema(
       required: true,
       ref: 'User', // reference to the User model
     },
-    avatarPath: {
+    key: {
+      type: String,
+    },
+    imagePath: {
       type: String,
     },
   },

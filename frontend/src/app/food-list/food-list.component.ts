@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { IngredientsDialogComponent } from '../ingredients-dialog/ingredients-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-food-list',
@@ -15,6 +16,10 @@ export class FoodListComponent implements OnInit, OnDestroy {
   foods: Food[] = [];
   isLoading = false;
   userIsAuthenticated = false;
+  totalFood = 0;
+  foodPerPage = 2;
+  currentPage = 1;
+  pageSizeOptions = [1, 2, 5, 10];
 
   private foodsSub: Subscription;
   private authStatusSub: Subscription;
@@ -27,12 +32,13 @@ export class FoodListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.foodService.getFood();
+    this.foodService.getFood(this.foodPerPage, this.currentPage);
     this.foodsSub = this.foodService
       .getFoodUpdateListener()
-      .subscribe((foods: Food[]) => {
+      .subscribe((foodData: { foods: Food[]; foodCount: number }) => {
         this.isLoading = false;
-        this.foods = foods;
+        this.totalFood = foodData.foodCount;
+        this.foods = foodData.foods;
       });
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService
@@ -40,6 +46,13 @@ export class FoodListComponent implements OnInit, OnDestroy {
       .subscribe((isAuthenticated) => {
         this.userIsAuthenticated = isAuthenticated;
       });
+  }
+
+  onChangedPage(pageData: PageEvent) {
+    this.isLoading = true; // automatically setting this to false in the petsSub after getPets is called
+    this.currentPage = pageData.pageIndex + 1;
+    this.foodPerPage = pageData.pageSize;
+    this.foodService.getFood(this.foodPerPage, this.currentPage);
   }
 
   openIngredientsDialog(food: Food) {

@@ -49,7 +49,6 @@ export class PetListComponent implements OnInit, OnDestroy {
   onChangedPage(pageData: PageEvent) {
     this.isLoading = true; // automatically setting this to false in the petsSub after getPets is called
     this.currentPage = pageData.pageIndex + 1;
-    console.log(this.currentPage);
     this.petsPerPage = pageData.pageSize;
     this.petsService.getPets(this.petsPerPage, this.currentPage);
   }

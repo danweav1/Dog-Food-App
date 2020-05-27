@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Pet } from './pet.model';
 import { Subject } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment'
+import { environment } from '../../environments/environment';
 
 const BACKEND_URL = environment.apiUrl + '/pets';
 
@@ -48,7 +48,10 @@ export class PetsService {
           petCount: transformedPetsData.maxPets,
         });
         this.pets.forEach((pet) => {
-          pet.imagePath = 'assets/profile-pic.png';
+          if (!pet.imagePath) {
+            pet.imagePath = 'assets/profile-pic.png';
+          }
+
           pet.favoriteFoods.push({
             id: '11',
             name: 'Wellness Core',
@@ -137,11 +140,13 @@ export class PetsService {
     return this.petsUpdated.asObservable();
   }
 
-  addPet(name: string) {
+  addPet(name: string, image: File) {
+    const petData = new FormData();
+    petData.append('name', name);
+    petData.append('image', image);
+    console.log(image);
     this.http
-      .post<{ message: string; pet: Pet }>(BACKEND_URL, {
-        name,
-      })
+      .post<{ message: string; pet: Pet }>(BACKEND_URL, petData)
       .subscribe((res) => {
         this.router.navigate(['/mypets']);
       });

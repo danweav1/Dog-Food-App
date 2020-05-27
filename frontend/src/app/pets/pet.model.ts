@@ -6,5 +6,6 @@ export interface Pet {
   badIngredients?: string[];
   favoriteFoods?: Food[];
   owner: string;
+  key?: string;
   imagePath?: string;
 }

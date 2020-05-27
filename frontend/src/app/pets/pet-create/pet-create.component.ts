@@ -55,7 +55,7 @@ export class PetCreateComponent implements OnInit, OnDestroy {
       return;
     }
     this.isLoading = true;
-    this.petsService.addPet(this.form.value.petName);
+    this.petsService.addPet(this.form.value.petName, this.form.value.image);
     this.form.reset();
   }
 

@@ -1,3 +1,4 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
 <div
   fxLayout="row"
   fxLayoutWrap
@@ -31,3 +32,10 @@
     </mat-card-actions>
   </mat-card>
 </div>
+<mat-paginator
+  *ngIf="foods.length > 0"
+  [length]="totalFood"
+  [pageSize]="foodPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onChangedPage($event)"
+></mat-paginator>
